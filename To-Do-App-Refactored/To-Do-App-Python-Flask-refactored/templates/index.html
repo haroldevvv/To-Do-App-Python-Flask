@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>To-Do List</title>
+    <style>
+        .about-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+    <div class="about-link">
+        <a href="/about" class="btn btn-primary">About</a>
+    </div>
+
+    <h1 class="mb-4 text-center">H&C Enhanced To-Do List</h1>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="alert-container mb-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Add Task Form -->
+    <form method="POST" action="/add_task" class="mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <input type="text" name="title" class="form-control" placeholder="Task Title" required>
+            </div>
+            <div class="col-md-4">
+                <input type="date" name="due_date" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <textarea name="description" class="form-control" placeholder="Task Description"></textarea>
+            </div>
+            <div class="col-md-12 text-center mt-3">
+                <button type="submit" class="btn btn-primary">Add Task</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Task List -->
+    <ul class="list-group">
+        {% for task in tasks %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <h5>{{ task.title }}</h5>
+                <p>{{ task.description }}</p>
+                <p><strong>Due Date:</strong> {{ task.due_date }}</p>
+                <span class="badge {% if task.due_status == 'Past due' %}bg-danger{% elif task.due_status == 'Due today' %}bg-warning{% else %}bg-success{% endif %}">
+                    {{ task.due_status }}
+                </span>
+                {% if task.status == 'complete' %}
+                <span class="badge bg-success">Completed</span>
+                {% endif %}
+            </div>
+            <div>
+                {% if task.status != 'complete' %}
+                <form action="/update_todo/{{ task.id }}" method="POST" style="display:inline;">
+                    <button class="btn btn-success btn-sm" name="update_todo" value="complete">Complete</button>
+                </form>
+                {% endif %}
+                <a href="/delete/{{ task.id }}" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <p>No copyright infringement intended.</p>
+    </footer>
+
+    <!-- Optional JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

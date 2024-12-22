@@ -1,0 +1,9 @@
+task,created_date,due_date,status,task_id,due_status
+Test123 ,8/15/23,2023-09-29,complete,xyz,On time
+New to do item -- updated status,2023-08-22 16:18:41,2023-09-22,complete,adlkj,On time
+"Give user ability to sort to-dos by name, due status, or due date",2023-08-23 21:02:58,2023-08-20,open,rv7jpcso,Past due
+Give user ability to create different lists with to do tasks,2023-08-23 21:03:41,2023-08-24,open,tl1fwf,Due today
+Give user ability to move tasks between lists,2023-08-24 07:39:30,2023-08-24,open,tljrz4,On time
+Allow user to view completed tasks within each list,2023-08-24 07:40:10,2023-08-26,open,th0b3r,On time
+Allow user to delete lists ,2023-08-24 07:40:23,2023-08-26,open,tk8kfh,On time
+"Update the homepage to display all to-do lists and when user clicks on a list, it will take them to a unique url with that to do list",2023-08-24 07:41:55,2023-08-27,open,twe1uh,On time

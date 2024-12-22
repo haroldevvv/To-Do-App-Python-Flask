@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roman's To-Do Enhanced To-Do List by Harold and Christian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Roman's To-Do List</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content (Task List or Form) -->
+    <div class="container my-4">
+        <h2 class="mb-4">Manage Your Tasks</h2>
+        
+        <!-- Task Adding Form -->
+        <form action="/add" class="mb-3" method="POST">
+            <div class="input-group">
+                <input class="form-control" name="todo" placeholder="Add a new task" required type="text">
+                <input class="form-control" name="due_date" required type="date">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Add</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Task List Table -->
+        <table class="table table-bordered task-table">
+            <thead>
+                <tr>
+                    <th scope="col">To Do Item</th>
+                    <th class="text-center" scope="col">Status</th>
+                    <th class="text-center" scope="col">Due Date</th>
+                    <th class="text-center" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                    {% if todo.status != "complete" %}
+                        <tr>
+                            <form action="/update_todo/{{ todo.id }}" method="POST">
+                                <td>{{ todo.title }}</td>
+                                <td class="text-center">
+                                    <span class="badge 
+                                        {% if todo.due_status == 'Due today' %} badge-due-today
+                                        {% elif todo.due_status == 'On time' %} badge-on-time
+                                        {% elif todo.due_status == 'Past due' %} badge-past-due
+                                        {% else %} badge-complete {% endif %}">
+                                        {{ todo.due_status }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <input class="form-control" name="due_date" type="date" value="{{ todo.due_date }}" required>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-warning btn-sm" type="submit">Update</button>
+                                    <a href="{{ url_for('complete_task', task_id=todo.task_id) }}" class="btn btn-success btn-sm">Complete</a>
+                                </td>
+                            </form>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
